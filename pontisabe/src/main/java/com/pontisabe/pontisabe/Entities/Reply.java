@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Reply {
     private Long id;
-    private Long userId;
+    private User user;
     private String replyText;
 }

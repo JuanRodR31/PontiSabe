@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class Answer {
     private Long id;
-    private Long userId;
+    private User user;
     private String answerText;
     List<Reply> replies;
     

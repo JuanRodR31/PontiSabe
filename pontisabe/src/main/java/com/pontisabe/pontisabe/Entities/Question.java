@@ -6,7 +6,7 @@ import java.util.List;
 @Data
 public class Question {
     private Long id;
-    private Long usernameId;
+    private User user;
     private String questionText;
     private List<Answer> answers;
 }
