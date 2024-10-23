@@ -1,0 +1,16 @@
+# servicios a ejecutar
+services:
+
+  # MySQL con nombre `PontiSabe`
+  db:
+    image: mysql:8.1.0 
+    container_name: PontiSabe
+    environment:
+      - MYSQL_DATABASE=pontisabe_db  # Nombre de la base de datos actualizado
+      - MYSQL_USER=pontisabe_user
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'

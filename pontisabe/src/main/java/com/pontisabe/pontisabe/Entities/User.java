@@ -12,6 +12,6 @@ public class User {
     private String lastNames;
     private String email;
     private String password;
-    private List<Long> followerList;
-    private List<Long> followingList;
+    private List<Follow> followerList;
+    private List<Follow> followingList;
 }

@@ -2,11 +2,14 @@ package com.pontisabe.pontisabe.Entities;
 
 import lombok.Data;
 import java.util.List;
-
+import java.util.Date;
 @Data
 public class Question {
     private Long id;
     private User user;
+    private Boolean anonym;
     private String questionText;
+    private Date publishDate;
+    private Date endDate;
     private List<Answer> answers;
 }
