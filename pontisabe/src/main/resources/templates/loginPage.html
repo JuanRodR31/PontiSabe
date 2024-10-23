@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PontiSabe Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #88A1AC;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #6CA6C1;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+        .login-container h1 {
+            color: #FFFFFF;
+            margin: 20px 0;
+        }
+        .login-container h2 {
+            color: #FFFFFF;
+            margin: 20px 0;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+        }
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #29485D;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .login-button:hover {
+            background-color: #193445;
+        }
+        .remember-me {
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+        .remember-me input {
+            margin-right: 5px;
+        }
+        .forgot-password {
+            color: #F1F1F1;
+            text-decoration: none;
+        }
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h1>PONTISABE</h1>
+    <h2>Login</h2>
+    <for action="/login" method="post">
+        <input type="email" name="email" placeholder="Username" class="input-field" required>
+        <input type="password" name="password" placeholder="Password" class="input-field" required>
+        <div class="remember-me">
+            <label>
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+        <button type="submit" class="login-button">Login</button>
+        <a href="/register" class= "forgot-password">Register</a>
+    </form>
+</div>
+
+</body>
+</html>

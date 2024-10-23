@@ -1,5 +1,10 @@
 package com.pontisabe.pontisabe.Services;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Connection;
+
+import com.pontisabe.pontisabe.DatabaseManagement.DatabaseConnection;
 import com.pontisabe.pontisabe.Entities.User;
 
 public class AccountService {
@@ -19,6 +24,24 @@ public class AccountService {
                 user.getNames() == null || user.getNames().isEmpty() ||
                 user.getLastNames() == null || user.getLastNames().isEmpty());
     }
+    
+    public boolean addUser(User user) {
+        String sql = "INSERT INTO User (username, names, lastNames, email, password) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getNames());
+            pstmt.setString(3, user.getLastNames());
+            pstmt.setString(4, user.getEmail());
+            pstmt.setString(5, user.getPassword());
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Error inserting user: " + e.getMessage());
+            return false;
+        }
+    }
 
     public String createUser(String username, String password, String names, String lastNames, String email) {
         User user = new User();
@@ -35,6 +58,9 @@ public class AccountService {
         }
         if (!validateMail(email)) {
             return ("Debe usar el email institucional para registrarse");
+        }
+        if (!addUser(user)) {
+            return ("Error al insertar usuario");
         }
         return ("cuenta creada exitosamente");
     }   
