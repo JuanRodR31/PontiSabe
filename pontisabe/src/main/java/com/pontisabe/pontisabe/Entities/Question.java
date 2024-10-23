@@ -10,6 +10,5 @@ public class Question {
     private Boolean anonym;
     private String questionText;
     private Date publishDate;
-    private Date endDate;
     private List<Answer> answers;
 }
