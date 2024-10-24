@@ -75,8 +75,8 @@
 <div class="login-container">
     <h1>PONTISABE</h1>
     <h2>Login</h2>
-    <for action="/login" method="post">
-        <input type="email" name="email" placeholder="Username" class="input-field" required>
+    <form action="/login" method="post">
+        <input type="text" name="username" placeholder="Username" class="input-field" required>
         <input type="password" name="password" placeholder="Password" class="input-field" required>
         <div class="remember-me">
             <label>
@@ -85,7 +85,7 @@
             <a href="#" class="forgot-password">Forgot Password?</a>
         </div>
         <button type="submit" class="login-button">Login</button>
-        <a href="/register" class= "forgot-password">Register</a>
+        <a href="/register" class="forgot-password">Register</a>
     </form>
 </div>
 

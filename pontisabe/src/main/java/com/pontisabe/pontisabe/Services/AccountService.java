@@ -1,6 +1,7 @@
 package com.pontisabe.pontisabe.Services;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 
@@ -64,4 +65,22 @@ public class AccountService {
         }
         return ("cuenta creada exitosamente");
     }   
+
+    public boolean login (String username, String password) {
+        String sql = "SELECT * FROM User WHERE username = ? AND password = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    System.out.println("Usuario logueado");
+                    return true;
+                }
+            }
+        }catch (SQLException e) {
+            System.out.println("Error al loguear: " + e.getMessage());
+        }
+        return false;
+    }
 }
