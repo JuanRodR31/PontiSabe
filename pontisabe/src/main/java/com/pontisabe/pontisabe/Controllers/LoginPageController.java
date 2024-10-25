@@ -35,7 +35,7 @@ public String login(@RequestParam String username,
                     RedirectAttributes redirectAttributes) {
     boolean isLoggedIn = accountService.login(username, password);
     if (isLoggedIn) {
-        return "redirect:/mainpage";
+        return "redirect:/mainPage";
     } else {
         redirectAttributes.addFlashAttribute("error", "Usuario o contraseña incorrectos");
         return "redirect:/login";  

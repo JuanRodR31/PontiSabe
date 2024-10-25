@@ -2,7 +2,7 @@ package com.pontisabe.pontisabe.Entities;
 
 import lombok.Data;
 import java.util.List;
-import java.util.Date;
+import java.sql.Date;
 @Data
 public class Question {
     private Long id;
@@ -11,4 +11,8 @@ public class Question {
     private String questionText;
     private Date publishDate;
     private List<Answer> answers;
+
+    public boolean isAnonym() {
+        return anonym;
+    }
 }

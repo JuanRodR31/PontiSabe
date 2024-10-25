@@ -1,7 +1,7 @@
 package com.pontisabe.pontisabe.Entities;
 
 import java.util.List;
-import java.util.Date;
+import java.sql.Date;
 import lombok.Data;
 
 @Data
@@ -11,5 +11,5 @@ public class Answer {
     private Boolean anonym;
     private String answerText;
     private Date pusblishDate;
-    List<Reply> replies;    
+    List<Reply> replies;
 }

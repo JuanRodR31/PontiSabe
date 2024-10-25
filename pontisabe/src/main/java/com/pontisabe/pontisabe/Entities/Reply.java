@@ -1,7 +1,7 @@
 package com.pontisabe.pontisabe.Entities;
 
 import lombok.Data;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 public class Reply {

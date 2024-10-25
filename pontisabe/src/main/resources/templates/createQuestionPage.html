@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #88A1AC;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            text-align: center;
+        }
+
+        .form-container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-container .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #29485D;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #193445;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Create Question</h1>
+    <form action="/addQuestion" method="post">
+        <!-- Campo para el texto de la pregunta -->
+        <label for="questionText">Question Text</label>
+        <input type="text" id="questionText" name="questionText" required>
+
+        <!-- Campo para seleccionar anonimato -->
+        <div class="checkbox-container">
+            <label for="anonym">Post as Anonymous:</label>
+            <input type="checkbox" id="anonym" name="anonym">
+        </div>
+
+        <!-- Campo para la fecha de publicación -->
+        <label for="publishDate">Publish Date</label>
+        <input type="date" id="publishDate" name="publishDate" required>
+
+        <!-- Campo para seleccionar el usuario (si es necesario) -->
+        <label for="userId">User</label>
+        <select id="userId" name="userId" required>
+            <option value="">Select User</option>
+            <!-- Aquí se insertarán las opciones de usuarios desde el backend -->
+            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+        </select>
+
+        <!-- Botón para enviar la pregunta -->
+        <button type="submit">Add Question</button>
+    </form>
+</div>
+
+</body>
+</html>

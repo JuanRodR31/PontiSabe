@@ -3,14 +3,18 @@ package com.pontisabe.pontisabe.Services;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.springframework.stereotype.Service;
+
 import java.sql.Connection;
 
 import com.pontisabe.pontisabe.DatabaseManagement.DatabaseConnection;
 import com.pontisabe.pontisabe.Entities.User;
 
+@Service
 public class AccountService {
     //CU-001 Crear Usuario
-    private final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+    private final String PASSWORD_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.#?!@$ %^&*-]).{8,}$";
     private final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@javeriana\\.edu\\.co$";
 
     public boolean validatePassword(String password) {
@@ -26,11 +30,11 @@ public class AccountService {
                 user.getLastNames() == null || user.getLastNames().isEmpty());
     }
     
-    public boolean addUser(User user) {
+    public boolean createUser(User user) {
         String sql = "INSERT INTO User (username, names, lastNames, email, password) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getNames());
             pstmt.setString(3, user.getLastNames());
@@ -60,16 +64,17 @@ public class AccountService {
         if (!validateMail(email)) {
             return ("Debe usar el email institucional para registrarse");
         }
-        if (!addUser(user)) {
+        if (!createUser(user)) {
             return ("Error al insertar usuario");
         }
         return ("cuenta creada exitosamente");
-    }   
-
+    }
+    
+    //CU-002 Login
     public boolean login (String username, String password) {
         String sql = "SELECT * FROM User WHERE username = ? AND password = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -83,4 +88,5 @@ public class AccountService {
         }
         return false;
     }
+    
 }
