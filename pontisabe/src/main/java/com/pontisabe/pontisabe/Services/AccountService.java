@@ -88,5 +88,31 @@ public class AccountService {
         }
         return false;
     }
-    
+    //Buscar usuario por id
+    public User findUserById(Long userId) {
+        String sql = "SELECT * FROM User WHERE id = ?";
+        User user = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setLong(1, userId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setNames(rs.getString("names"));
+                    user.setLastNames(rs.getString("lastNames"));
+                    user.setEmail(rs.getString("email"));
+                    // Establecer otros atributos de 'User' si es necesario
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching user: " + e.getMessage());
+        }
+
+        return user;
+    }
 }

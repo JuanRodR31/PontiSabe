@@ -35,4 +35,4 @@ public class ForumController {
         model.addAttribute("forums", forums);
         return "mainPage";  // Nombre del archivo HTML (mainPage.html)
     }
-}
+} 

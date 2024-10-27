@@ -29,9 +29,7 @@
             color: #333;
         }
 
-        .form-container input[type="text"],
-        .form-container input[type="date"],
-        .form-container select {
+        .form-container input[type="text"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -68,6 +66,10 @@
 <div class="form-container">
     <h1>Create Question</h1>
     <form action="/addQuestion" method="post">
+        <!-- Campo para el título del foro -->
+        <label for="forumTitle">Forum Title</label>
+        <input type="text" id="forumTitle" name="forumTitle" required>
+
         <!-- Campo para el texto de la pregunta -->
         <label for="questionText">Question Text</label>
         <input type="text" id="questionText" name="questionText" required>
@@ -77,18 +79,6 @@
             <label for="anonym">Post as Anonymous:</label>
             <input type="checkbox" id="anonym" name="anonym">
         </div>
-
-        <!-- Campo para la fecha de publicación -->
-        <label for="publishDate">Publish Date</label>
-        <input type="date" id="publishDate" name="publishDate" required>
-
-        <!-- Campo para seleccionar el usuario (si es necesario) -->
-        <label for="userId">User</label>
-        <select id="userId" name="userId" required>
-            <option value="">Select User</option>
-            <!-- Aquí se insertarán las opciones de usuarios desde el backend -->
-            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
-        </select>
 
         <!-- Botón para enviar la pregunta -->
         <button type="submit">Add Question</button>

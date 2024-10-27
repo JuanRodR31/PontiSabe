@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ForumService {
 
@@ -17,10 +18,7 @@ public class ForumService {
         if (title == null || title.isEmpty() || question == null) {
             return ("El contenido esta vacio");
         }
-        Forum forum = new Forum();
-        forum.setTitle(title);
-        forum.setQuestion(question);
-        if (!addForumTODB(forum)) {
+        if (!addForumTODB(title, question.getId())) {
             return ("Ocurrio un error al crear el foro");
         }
         return ("Foro creado correctamente");
@@ -28,13 +26,13 @@ public class ForumService {
     }
 
     // Método para insertar el objeto Forum en la base de datos
-    public boolean addForumTODB(Forum forum) {
+    public boolean addForumTODB(String title, Long questionId) {
         String sql = "INSERT INTO Forum (title, question_id) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, forum.getTitle());
-            pstmt.setLong(2, forum.getQuestion().getId());
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, title);
+            pstmt.setLong(2, questionId);
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -67,6 +65,67 @@ public class ForumService {
             System.out.println("Error getting forums: " + e.getMessage());
             return null;
         }
+    }
+
+    //Metodo para buscar la lista de seguidores de un usuario
+    public List<Long> getFollowingsByFollower(Long followerId) {
+        List<Long> followings = new ArrayList<>();
+        String sql = "SELECT following FROM Follow WHERE follower = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, followerId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    followings.add(rs.getLong("following"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching followings: " + e.getMessage());
+        }
+        return followings;
+    }
+
+    public List<Forum> getForumsByFollowings(List<Long> followingIds) {
+        List<Forum> forums = new ArrayList<>();
+
+        if (followingIds.isEmpty()) {
+            return forums;  // Retorna una lista vacía si no hay followings
+        }
+
+        // Construcción de la consulta SQL con placeholders
+        StringBuilder sql = new StringBuilder("SELECT f.* FROM Forum f ");
+        sql.append("JOIN Question q ON f.question_id = q.id ");
+        sql.append("WHERE q.user_id IN (");
+        sql.append(followingIds.stream().map(id -> "?").collect(Collectors.joining(", ")));
+        sql.append(") AND q.anonym = 0");
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            // Asigna los IDs de `following` a los placeholders en la consulta
+            for (int i = 0; i < followingIds.size(); i++) {
+                pstmt.setLong(i + 1, followingIds.get(i));
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Forum forum = new Forum();
+                    forum.setId(rs.getLong("id"));
+                    forum.setTitle(rs.getString("title"));
+                    Long questionId = rs.getLong("question_id");
+
+                    QuestionService questionService = new QuestionService();
+                    forum.setQuestion(questionService.getQuestionById(questionId));
+                    
+                    forums.add(forum);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching forums: " + e.getMessage());
+        }
+        return forums;
     }
 
 }

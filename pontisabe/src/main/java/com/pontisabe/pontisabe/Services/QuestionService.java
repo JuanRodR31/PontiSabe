@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Statement;
 
 import com.pontisabe.pontisabe.DatabaseManagement.DatabaseConnection;
 import com.pontisabe.pontisabe.Entities.Question;
@@ -14,27 +13,30 @@ import com.pontisabe.pontisabe.Entities.User;
 public class QuestionService {
     //CU-01 Crear Pregunta
     
-    public boolean createQuestion(Question question) {
-        String sql = "INSERT INTO Question (questionText, publishDate, anonym, user_id) VALUES (?, ?, ?, ?)";
-    
+    public Long insertQuestionToDbAndGetId(Question question) {
+        String sql = "INSERT INTO Question (questionText, publishDate, user_id, anonym) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            
             pstmt.setString(1, question.getQuestionText());
-            Date date = Date.valueOf(LocalDate.now());
-            pstmt.setDate(2, date);
-            pstmt.setBoolean(3, question.isAnonym());
-            if (question.getUser() != null) {
-                pstmt.setLong(4, question.getUser().getId());
-            } else {
-                pstmt.setNull(4, java.sql.Types.BIGINT);
-            }
+            pstmt.setDate(2, question.getPublishDate());
+            pstmt.setLong(3, question.getUser().getId());
+            pstmt.setBoolean(4, question.isAnonym());
+            
             int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected == 1;
+            if (rowsAffected == 1) {
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getLong(1); // Retorna el ID generado
+                    }
+                }
+            }
         } catch (SQLException e) {
-            System.out.println("Error creating question: " + e.getMessage());
+            System.out.println("Error inserting question: " + e.getMessage());
         }
-        return false;
+        return null; // Retorna null si no se pudo insertar
     }
+    
     
     //Buscar pregunta por id
     public Question getQuestionById(Long id) {
