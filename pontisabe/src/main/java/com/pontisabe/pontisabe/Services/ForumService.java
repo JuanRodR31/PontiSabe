@@ -46,7 +46,7 @@ public class ForumService {
         List<Forum> forums = new ArrayList<>();
         String sql = "SELECT * FROM Forum";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 QuestionService questionService = new QuestionService();
@@ -68,57 +68,60 @@ public class ForumService {
     }
 
     //Metodo para buscar la lista de seguidores de un usuario
-    public List<Long> getFollowingsByFollower(Long followerId) {
-        List<Long> followings = new ArrayList<>();
-        String sql = "SELECT following FROM Follow WHERE follower = ?";
-
+    public List<Long> getFollowersByFollowing(Long followingId) {
+        List<Long> followers = new ArrayList<>();
+        String sql = "SELECT follower FROM Follow WHERE following = ?";
+    
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, followerId);
-
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, followingId);
+    
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    followings.add(rs.getLong("following"));
+                    followers.add(rs.getLong("follower"));
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching followings: " + e.getMessage());
+            System.out.println("Error fetching followers: " + e.getMessage());
         }
-        return followings;
+    
+    
+        return followers;
     }
-
+    
     public List<Forum> getForumsByFollowings(List<Long> followingIds) {
         List<Forum> forums = new ArrayList<>();
-
+    
         if (followingIds.isEmpty()) {
+            System.out.println("No followings found, returning empty forum list.");
             return forums;  // Retorna una lista vacía si no hay followings
         }
-
+    
         // Construcción de la consulta SQL con placeholders
         StringBuilder sql = new StringBuilder("SELECT f.* FROM Forum f ");
         sql.append("JOIN Question q ON f.question_id = q.id ");
         sql.append("WHERE q.user_id IN (");
         sql.append(followingIds.stream().map(id -> "?").collect(Collectors.joining(", ")));
         sql.append(") AND q.anonym = 0");
-
+    
         try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
-
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+    
             // Asigna los IDs de `following` a los placeholders en la consulta
             for (int i = 0; i < followingIds.size(); i++) {
                 pstmt.setLong(i + 1, followingIds.get(i));
             }
-
+    
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Forum forum = new Forum();
                     forum.setId(rs.getLong("id"));
                     forum.setTitle(rs.getString("title"));
                     Long questionId = rs.getLong("question_id");
-
+    
                     QuestionService questionService = new QuestionService();
                     forum.setQuestion(questionService.getQuestionById(questionId));
-                    
+    
                     forums.add(forum);
                 }
             }
@@ -127,5 +130,34 @@ public class ForumService {
         }
         return forums;
     }
+    
+    public Forum getForumById(Long forumId) {
+        Forum forum = null;
+        String sql = "SELECT * FROM Forum WHERE id = ?";
+    
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, forumId);
+    
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    forum = new Forum();
+                    forum.setId(rs.getLong("id"));
+                    forum.setTitle(rs.getString("title"));
+    
+                    Long questionId = rs.getLong("question_id");
+                    QuestionService questionService = new QuestionService();
+                    Question question = questionService.getQuestionById(questionId);
+    
+                    forum.setQuestion(question); // Asigna la pregunta al foro
+                    // Asigna otros atributos de Forum según tu estructura de la clase
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching forum by ID: " + e.getMessage());
+        }
+        return forum;
+    }
+    
 
 }

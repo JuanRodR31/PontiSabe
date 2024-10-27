@@ -7,12 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.pontisabe.pontisabe.DatabaseManagement.DatabaseConnection;
+import com.pontisabe.pontisabe.Entities.Forum;
 import com.pontisabe.pontisabe.Entities.Question;
 import com.pontisabe.pontisabe.Entities.User;
 
 public class QuestionService {
     //CU-01 Crear Pregunta
     
+    public Forum getForumByIduestionId;
+
     public Long insertQuestionToDbAndGetId(Question question) {
         String sql = "INSERT INTO Question (questionText, publishDate, user_id, anonym) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();

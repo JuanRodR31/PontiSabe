@@ -10,6 +10,6 @@ public class Answer {
     private User user;
     private Boolean anonym;
     private String answerText;
-    private Date pusblishDate;
+    private Date publishDate;
     List<Reply> replies;
 }

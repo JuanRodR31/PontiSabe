@@ -89,6 +89,14 @@
             padding: 20px;
             margin-bottom: 20px;
             border: 2px solid black;
+            text-decoration: none; /* Sin subrayado */
+            color: inherit; /* Color del texto heredado */
+            display: block;
+        }
+
+        .forum-item:hover {
+            background-color: #ddd;
+            cursor: pointer;
         }
 
         .forum-item .forum-header {
@@ -135,7 +143,7 @@
     <!-- Contenedor principal de los foros -->
     <div class="main-container">
         <!-- Iterar sobre la lista de foros -->
-        <div th:each="forum : ${forums}" class="forum-item">
+        <a th:each="forum : ${forums}" th:href="@{/questionRepliesPage(id=${forum.id})}" class="forum-item">
             <!-- Encabezado del foro con título, username y fecha -->
             <div class="forum-header">
                 <h2 th:text="${forum.title}">TÍTULO FORO</h2>
@@ -145,7 +153,7 @@
                 </div>
             </div>
             <p th:text="${forum.question.questionText}">Pregunta...</p>
-        </div>
+        </a>
     </div>
 
 </body>
