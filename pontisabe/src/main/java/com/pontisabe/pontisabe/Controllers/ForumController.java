@@ -19,20 +19,16 @@ public class ForumController {
 
     @GetMapping("/mainPage")
     public String showMainPage(Model model) {
-        // Obtener la lista de foros
         List<Forum> forums = forumService.getAllForums();
 
-        // Para cada foro, obtener la pregunta y el usuario si no es anónimo
         for (Forum forum : forums) {
             Question question = forum.getQuestion();
-            if (!question.isAnonym()) {  // Si la pregunta no es anónima
+            if (!question.isAnonym()) {  
                 User user = questionService.findUserById(question.getUser().getId());
-                question.setUser(user);  // Asignar el usuario a la pregunta
+                question.setUser(user);  
             }
         }
-
-        // Pasar la lista de foros al modelo
         model.addAttribute("forums", forums);
-        return "mainPage";  // Nombre del archivo HTML (mainPage.html)
+        return "mainPage"; 
     }
 } 

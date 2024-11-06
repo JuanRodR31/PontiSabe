@@ -119,6 +119,54 @@
             margin-top: 5px;
             text-align: right;
         }
+
+        .add-reply-container {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .add-reply-container textarea {
+            width: 100%;
+            height: 60px;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+
+        .add-reply-container button {
+            background-color: #5A728C;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-reply-container button:hover {
+            background-color: #3E5161;
+        }
+
+        .reply {
+            background-color: #f0f0f0;
+            padding: 8px;
+            margin: 5px 0 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .reply-meta {
+            font-size: 12px;
+            color: #777;
+            font-style: italic;
+            text-align: right;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -157,6 +205,30 @@
             <div class="answer-meta">
                 <span th:text="${answer.user.username}">Usuario</span> | 
                 <span th:text="${#dates.format(answer.publishDate, 'dd/MM/yyyy')}">Fecha</span>
+            </div>
+
+            <!-- Formulario para añadir una nueva réplica -->
+            <div class="add-reply-container">
+                <form action="/addReply" method="post">
+                    <textarea name="replyText" placeholder="Escribe tu réplica aquí..." required></textarea>
+                    <label>
+                        <input type="checkbox" name="anonym"> Responder como anónimo
+                    </label>
+                    <input type="hidden" name="answerId" th:value="${answer.id}">
+                    <input type="hidden" name="forumId" th:value="${forum.id}">
+                    <button type="submit">Publicar Réplica</button>
+                </form>
+            </div>
+
+            <!-- Lista de réplicas -->
+            <div th:if="${repliesMap[answer.id] != null}">
+                <div th:each="reply : ${repliesMap[answer.id]}" class="reply">
+                    <p th:text="${reply.replyText}">Texto de la réplica...</p>
+                    <div class="reply-meta">
+                        <span th:text="${reply.user.username}">Usuario</span> |
+                        <span th:text="${#dates.format(reply.publishDate, 'dd/MM/yyyy')}">Fecha</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

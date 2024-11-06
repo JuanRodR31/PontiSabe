@@ -2,6 +2,7 @@ package com.pontisabe.pontisabe.Entities;
 
 import lombok.Data;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class Reply {
