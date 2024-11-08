@@ -5,12 +5,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
+
+    private static final String URL_VARIABLE = "URL";
+    private static final String USER_VARIABLE = "USER";
+    private static final String PASSWORD_VARIABLE = "PASSWORD";
+
     private static final String URL = "jdbc:h2:mem:testdb";
     private static final String USER = "pontisabe_user";
     private static final String PASSWORD = "secret";
 
+    // TODO: revisar, genera una conexión nueva en cada petición
+    // TODO: cambiar por la fabrica de datasource de Spring Boot
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+
+        String url = System.getenv(URL_VARIABLE) != null ? System.getenv(URL_VARIABLE) : URL;
+        String user = System.getenv(USER_VARIABLE) != null ? System.getenv(USER_VARIABLE) : USER;
+        String password = System.getenv(PASSWORD_VARIABLE) != null ? System.getenv(PASSWORD_VARIABLE) : PASSWORD; 
+
+        System.out.println("URL:" + url);
+        System.out.println("USER:" + user);
+        System.out.println("PASSWORD:" + password);
+
+
+        return DriverManager.getConnection(url, user, password);
     }
 }
 // public class DatabaseConnection {

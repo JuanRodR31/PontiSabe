@@ -30,7 +30,9 @@ public class AccountService {
                 user.getLastNames() == null || user.getLastNames().isEmpty());
     }
     
-    public boolean createUser(User user) {
+    public boolean createUser(User user) 
+        throws Exception
+    {
         String sql = "INSERT INTO User (username, names, lastNames, email, password) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -42,32 +44,41 @@ public class AccountService {
             pstmt.setString(5, user.getPassword());
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
+
         } catch (SQLException e) {
-            System.out.println("Error inserting user: " + e.getMessage());
-            return false;
+            throw new Exception ("Error inserting user: " + e.getMessage(), e); 
         }
     }
 
-    public String createUser(String username, String password, String names, String lastNames, String email) {
+    public String createUser(String username, String password, String names, String lastNames, String email) 
+        throws Exception
+    {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setNames(names);
         user.setLastNames(lastNames);
         user.setEmail(email);
+
         if (hasEmptyFields(user)) {
-            return ("Hay campos vacios");
+            throw new Exception ("Hay campos vacios");
         }
         if (!validatePassword(password)) {
-            return ("La contraseña debe contener una mayuscula, un numero y un caracter especial");
+            throw new Exception ("La contraseña debe contener una mayuscula, un numero y un caracter especial");
         }
         if (!validateMail(email)) {
-            return ("Debe usar el email institucional para registrarse");
+            throw new Exception ("Debe usar el email institucional para registrarse");
         }
-        if (!createUser(user)) {
-            return ("Error al insertar usuario");
+
+        try {
+
+            createUser(user);
+            return ("cuenta creada exitosamente");
+            
+        } catch (Exception e) {
+            throw new Exception ("Error creando usuario: " + e.getMessage(), e);
         }
-        return ("cuenta creada exitosamente");
+        
     }
     
     //CU-002 Login
