@@ -29,6 +29,7 @@ public class CreateQuestionController {
     public String addQuestion(
         @RequestParam String forumTitle,
         @RequestParam String questionText,
+        @RequestParam Long userId,
         @RequestParam(required = false) Boolean anonym) {
         System.out.println(forumTitle);
         Question question = new Question();
@@ -36,7 +37,7 @@ public class CreateQuestionController {
         question.setAnonym(anonym != null && anonym);
         question.setPublishDate(Date.valueOf(LocalDate.now()));
         
-        question.setUser(accountService.findUserById(1L));
+        question.setUser(accountService.findUserById(userId));
 
         Long questionId = questionService.insertQuestionToDbAndGetId(question);
         question.setId(questionId);

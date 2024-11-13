@@ -60,9 +60,9 @@ public class QuestionRepliesController {
     @PostMapping("/addAnswer")
     public String addAnswer(@RequestParam("answerText") String answerText,
                             @RequestParam(value = "anonym", defaultValue = "false") boolean anonym,
-                            @RequestParam("forumId") Long forumId) {
+                            @RequestParam("forumId") Long forumId,
+                            @RequestParam("userId") Long userId) {
         // Insertar la respuesta
-        Long userId = 1L;
         boolean success = answerService.insertAnswer(answerText, anonym, userId, idQuestion);
 
         if (success) {

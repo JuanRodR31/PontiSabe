@@ -126,4 +126,24 @@ public class AccountService {
 
         return user;
     }
+    public Long getUserIdByUsername(String username) {
+        String sql = "SELECT id FROM User WHERE username = ?";
+        Long userId = null;
+    
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    
+            pstmt.setString(1, username);
+    
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getLong("id");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching user ID by username: " + e.getMessage());
+        }
+    
+        return userId;
+    }
 }

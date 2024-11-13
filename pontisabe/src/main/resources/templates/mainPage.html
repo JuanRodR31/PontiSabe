@@ -89,8 +89,8 @@
             padding: 20px;
             margin-bottom: 20px;
             border: 2px solid black;
-            text-decoration: none; /* Sin subrayado */
-            color: inherit; /* Color del texto heredado */
+            text-decoration: none;
+            color: inherit;
             display: block;
         }
 
@@ -130,9 +130,9 @@
     <div class="navbar">
         <div class="logo">PONTISABE</div>
         <div class="menu">
-            <button onclick="location.href='/mainPage'">HOME</button>
-            <button onclick="location.href='/friendsPage'">FRIENDS</button>
-            <button onclick="location.href='/createQuestionPage'">NEW QUESTION</button>
+            <button id="homeButton">HOME</button>
+            <button id="friendsButton">FRIENDS</button>
+            <button id="newQuestionButton">NEW QUESTION</button>
         </div>
         <div class="user-info">
             <span id="username" th:text="${username}">NombreDelUsuario</span>
@@ -155,6 +155,19 @@
             <p th:text="${forum.question.questionText}">Pregunta...</p>
         </a>
     </div>
+
+    <script>
+        // Extraer el userId de la URL actual
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('userId');
+
+        // Agregar el userId a los botones de navegación si está presente
+        if (userId) {
+            document.getElementById('homeButton').onclick = () => location.href = `/mainPage?userId=${userId}`;
+            document.getElementById('friendsButton').onclick = () => location.href = `/friendsPage?userId=${userId}`;
+            document.getElementById('newQuestionButton').onclick = () => location.href = `/createQuestionPage?userId=${userId}`;
+        }
+    </script>
 
 </body>
 </html>

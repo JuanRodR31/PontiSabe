@@ -30,15 +30,17 @@ public class LoginPageController {
     }
 
     @PostMapping("/login")
-public String login(@RequestParam String username, 
-                    @RequestParam String password, 
-                    RedirectAttributes redirectAttributes) {
-    boolean isLoggedIn = accountService.login(username, password);
-    if (isLoggedIn) {
-        return "redirect:/mainPage";
-    } else {
-        redirectAttributes.addFlashAttribute("error", "Usuario o contraseña incorrectos");
-        return "redirect:/login";  
+    public String login(@RequestParam String username,
+                        @RequestParam String password,
+                        RedirectAttributes redirectAttributes) {
+        boolean isLoggedIn = accountService.login(username, password);
+        if (isLoggedIn) {
+            // Obtener el ID del usuario después de un login exitoso
+            Long userId = accountService.getUserIdByUsername(username);
+            return "redirect:/mainPage?userId=" + userId; // Redirigir con el ID de usuario en la URL
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Usuario o contraseña incorrectos");
+            return "redirect:/login";
+        }
     }
-}
 }
