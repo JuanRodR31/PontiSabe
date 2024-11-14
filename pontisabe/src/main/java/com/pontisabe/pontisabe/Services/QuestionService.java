@@ -1,6 +1,7 @@
 package com.pontisabe.pontisabe.Services;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ public class QuestionService {
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             pstmt.setString(1, question.getQuestionText());
-            pstmt.setDate(2, question.getPublishDate());
+            pstmt.setDate(2, (Date) question.getPublishDate());
             pstmt.setLong(3, question.getUser().getId());
             pstmt.setBoolean(4, question.isAnonym());
             
