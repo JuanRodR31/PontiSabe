@@ -187,7 +187,7 @@
     <!-- Formulario para añadir una nueva respuesta -->
     <div class="add-answer-container">
         <h2>Añadir Respuesta</h2>
-        <form action="/addAnswer" method="post">
+        <form th:action="@{/addAnswer(userId=${userId})}" method="post">
             <textarea name="answerText" placeholder="Escribe tu respuesta aquí..." required></textarea>
             <label>
                 <input type="checkbox" name="anonym"> Responder como anónimo
@@ -209,7 +209,7 @@
 
             <!-- Formulario para añadir una nueva réplica -->
             <div class="add-reply-container">
-                <form action="/addReply" method="post">
+                <form th:action="@{/addReply(userId=${userId})}" method="post">
                     <textarea name="replyText" placeholder="Escribe tu réplica aquí..." required></textarea>
                     <label>
                         <input type="checkbox" name="anonym"> Responder como anónimo

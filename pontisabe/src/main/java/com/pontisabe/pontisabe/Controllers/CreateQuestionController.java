@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -11,7 +12,6 @@ import com.pontisabe.pontisabe.Entities.Question;
 import com.pontisabe.pontisabe.Services.AccountService;
 import com.pontisabe.pontisabe.Services.ForumService;
 import com.pontisabe.pontisabe.Services.QuestionService;
-
 
 @Controller
 public class CreateQuestionController {
@@ -25,13 +25,15 @@ public class CreateQuestionController {
         return "createQuestionPage";
     }
 
-    @PostMapping("/addQuestion")
+    @PostMapping("/addQuestion/{userId}")
     public String addQuestion(
+        @PathVariable Long userId,
         @RequestParam String forumTitle,
         @RequestParam String questionText,
-        @RequestParam Long userId,
         @RequestParam(required = false) Boolean anonym) {
+        
         System.out.println(forumTitle);
+        
         Question question = new Question();
         question.setQuestionText(questionText);
         question.setAnonym(anonym != null && anonym);
@@ -44,7 +46,6 @@ public class CreateQuestionController {
 
         forumService.createForum(forumTitle, question);
         
-
-        return "redirect:/mainPage";
+        return "redirect:/mainPage?userId=" + userId;
     }
 }

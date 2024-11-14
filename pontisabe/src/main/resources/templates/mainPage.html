@@ -143,7 +143,7 @@
     <!-- Contenedor principal de los foros -->
     <div class="main-container">
         <!-- Iterar sobre la lista de foros -->
-        <a th:each="forum : ${forums}" th:href="@{/questionRepliesPage(id=${forum.id})}" class="forum-item">
+        <a th:each="forum : ${forums}" th:href="@{/questionRepliesPage(id=${forum.id}, userId=${userId})}" class="forum-item">
             <!-- Encabezado del foro con título, username y fecha -->
             <div class="forum-header">
                 <h2 th:text="${forum.title}">TÍTULO FORO</h2>

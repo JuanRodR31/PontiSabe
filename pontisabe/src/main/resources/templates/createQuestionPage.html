@@ -60,12 +60,26 @@
             background-color: #193445;
         }
     </style>
+    <script>
+        // JavaScript para obtener el userId de la URL y asignarlo al action del formulario
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+
+            if (userId) {
+                const form = document.getElementById("questionForm");
+                form.action = `/addQuestion/${userId}`;
+            } else {
+                console.error("userId no encontrado en la URL");
+            }
+        });
+    </script>
 </head>
 <body>
 
 <div class="form-container">
     <h1>Create Question</h1>
-    <form action="/addQuestion" method="post">
+    <form id="questionForm" method="post">
         <!-- Campo para el título del foro -->
         <label for="forumTitle">Forum Title</label>
         <input type="text" id="forumTitle" name="forumTitle" required>

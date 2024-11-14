@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "replies")  
+@Table(name = "replies")
 public class Reply {
 
     @Id
@@ -24,4 +24,8 @@ public class Reply {
 
     @Column(name = "reply_text", nullable = false, length = 1000)
     private String replyText;
+
+    @ManyToOne
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
 }

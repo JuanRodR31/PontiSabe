@@ -1,9 +1,9 @@
 package com.pontisabe.pontisabe.Entities;
 
-import lombok.Data;
-import java.util.List;
-import java.util.Date;
 import jakarta.persistence.*;
+import lombok.Data;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,9 +28,4 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
-
-    public boolean isAnonym() {
-        return anonym;
-    }
 }
-

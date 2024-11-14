@@ -25,7 +25,7 @@ public class QuestionService {
             pstmt.setString(1, question.getQuestionText());
             pstmt.setDate(2, (Date) question.getPublishDate());
             pstmt.setLong(3, question.getUser().getId());
-            pstmt.setBoolean(4, question.isAnonym());
+            pstmt.setBoolean(4, question.getAnonym());
             
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected == 1) {

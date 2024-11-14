@@ -1,9 +1,9 @@
 package com.pontisabe.pontisabe.Entities;
 
-import java.util.Date;
-import java.util.List;
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,7 +15,7 @@ public class Answer {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private Boolean anonym;
@@ -25,6 +25,10 @@ public class Answer {
 
     @Temporal(TemporalType.DATE)
     private Date publishDate;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies;

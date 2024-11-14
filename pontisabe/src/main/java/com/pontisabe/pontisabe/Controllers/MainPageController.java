@@ -27,7 +27,7 @@ public class MainPageController {
     if (forums != null) {
         for (Forum forum : forums) {
             Question question = forum.getQuestion();
-            if (!question.isAnonym()) {
+            if (!question.getAnonym()) {
                 User user = questionService.findUserById(question.getUser().getId());
                 question.setUser(user);
             }
