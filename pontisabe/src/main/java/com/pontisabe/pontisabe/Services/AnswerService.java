@@ -29,8 +29,8 @@ public class AnswerService {
                 while (rs.next()) {
                     Answer answer = new Answer();
                     answer.setId(rs.getLong("id"));
-                    answer.setAnswerText(rs.getString("answerText"));
-                    answer.setPublishDate(rs.getDate("publishDate"));
+                    answer.setAnswerText(rs.getString("answer_text"));
+                    answer.setPublishDate(rs.getDate("publish_date"));
                     boolean isAnonym = rs.getBoolean("anonym");
                     answer.setAnonym(isAnonym);
                     Long userId = rs.getLong("user_id");
@@ -54,17 +54,17 @@ public class AnswerService {
     }
 
     public boolean insertAnswer(String answerText, boolean anonym, Long userId, Long questionId) {
-        String sql = "INSERT INTO Answer (answerText, publishDate, anonym, user_id, question_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Answer (answer_text, publish_date, anonym, user_id, question_id) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             // Configurar los valores de los parámetros
             pstmt.setString(1, answerText);
-            pstmt.setDate(2, Date.valueOf(LocalDate.now()));  // Fecha actual como fecha de publicación
+            pstmt.setDate(2, Date.valueOf(LocalDate.now()));
             pstmt.setBoolean(3, anonym);
-            pstmt.setLong(4, userId); // ID del usuario que responde
-            pstmt.setLong(5, questionId); // ID de la pregunta (en este caso, es 2)
+            pstmt.setLong(4, userId);
+            pstmt.setLong(5, questionId);
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;

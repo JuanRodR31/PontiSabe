@@ -33,7 +33,7 @@ public class AccountService {
     public boolean createUser(User user) 
         throws Exception
     {
-        String sql = "INSERT INTO User (username, names, lastNames, email, password) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO User (username, names, last_names, email, password) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -115,9 +115,8 @@ public class AccountService {
                     user.setId(rs.getLong("id"));
                     user.setUsername(rs.getString("username"));
                     user.setNames(rs.getString("names"));
-                    user.setLastNames(rs.getString("lastNames"));
+                    user.setLastNames(rs.getString("last_names"));
                     user.setEmail(rs.getString("email"));
-                    // Establecer otros atributos de 'User' si es necesario
                 }
             }
         } catch (SQLException e) {

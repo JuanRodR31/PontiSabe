@@ -26,8 +26,8 @@ public class ReplyService {
                 while (rs.next()) {
                     Reply reply = new Reply();
                     reply.setId(rs.getLong("id"));
-                    reply.setReplyText(rs.getString("replyText"));
-                    reply.setPublishDate(rs.getDate("publishDate"));
+                    reply.setReplyText(rs.getString("reply_text"));
+                    reply.setPublishDate(rs.getDate("publish_date"));
                     reply.setAnonym(rs.getBoolean("anonym"));
 
                     Long userId = rs.getLong("user_id");
@@ -45,7 +45,7 @@ public class ReplyService {
     }
 
     public boolean insertReply(String replyText, boolean anonym, Long userId, Long answerId) {
-        String sql = "INSERT INTO Reply (replyText, publishDate, anonym, user_id, answer_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Reply (reply_text, publish_date, anonym, user_id, answer_id) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {

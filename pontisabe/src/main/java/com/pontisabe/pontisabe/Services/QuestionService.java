@@ -18,7 +18,7 @@ public class QuestionService {
     public Forum getForumByIduestionId;
 
     public Long insertQuestionToDbAndGetId(Question question) {
-        String sql = "INSERT INTO Question (questionText, publishDate, user_id, anonym) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Question (question_text, publish_date, user_id, anonym) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
@@ -31,7 +31,7 @@ public class QuestionService {
             if (rowsAffected == 1) {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        return generatedKeys.getLong(1); // Retorna el ID generado
+                        return generatedKeys.getLong(1);
                     }
                 }
             }
@@ -53,14 +53,14 @@ public class QuestionService {
                 if (rs.next()) {
                     Question question = new Question();
                     question.setId(rs.getLong("id"));
-                    question.setQuestionText(rs.getString("questionText"));
-                    boolean isAnonym = rs.getBoolean("anonym"); 
+                    question.setQuestionText(rs.getString("question_text"));
+                    boolean isAnonym = rs.getBoolean("anonym");
                     question.setAnonym(isAnonym);
                     question.setUser(findUserById(rs.getLong("user_id")));
                     if (isAnonym) {
                         question.getUser().setUsername("Anonym");
                     }
-                    question.setPublishDate(rs.getDate("publishDate"));
+                    question.setPublishDate(rs.getDate("publish_date"));
                     // Asignar otros atributos según tu estructura de la clase Question
                     return question;
                 }
@@ -83,7 +83,7 @@ public class QuestionService {
                     user.setId(rs.getLong("id"));
                     user.setUsername(rs.getString("username"));
                     user.setNames(rs.getString("names"));
-                    user.setLastNames(rs.getString("lastNames"));
+                    user.setLastNames(rs.getString("last_names"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     return user;

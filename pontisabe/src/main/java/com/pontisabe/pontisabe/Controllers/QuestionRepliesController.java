@@ -35,7 +35,7 @@ public class QuestionRepliesController {
                                         Model model) {
         // Obtener el foro usando el id
         Forum forum = forumService.getForumById(id);
-        idQuestion = id;  // Setting the question ID here
+        idQuestion = forum.getQuestion().getId();
 
         if (forum != null && forum.getQuestion() != null) {
             Question question = questionService.getQuestionById(forum.getQuestion().getId());
@@ -69,6 +69,7 @@ public class QuestionRepliesController {
                             @RequestParam("forumId") Long forumId,
                             @RequestParam("userId") Long userId) { 
         // Insert the answer
+        System.out.println("Received idQuestion: " + idQuestion);
         boolean success = answerService.insertAnswer(answerText, anonym, userId, idQuestion);
 
         if (success) {
@@ -87,8 +88,6 @@ public class QuestionRepliesController {
                         @RequestParam("forumId") Long forumId,
                         @RequestParam("idQuestion") Long idQuestion,
                         @RequestParam("userId") Long userId) {
-
-        // Verifica si idQuestion no es nulo
         System.out.println("Received idQuestion: " + idQuestion);
 
         // Insertar la réplica
