@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "answers")
 public class Answer {
 
     @Id

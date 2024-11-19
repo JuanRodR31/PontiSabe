@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "replies")
 public class Reply {
 
     @Id
