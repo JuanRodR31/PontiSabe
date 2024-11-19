@@ -193,6 +193,7 @@
                 <input type="checkbox" name="anonym"> Responder como anónimo
             </label>
             <input type="hidden" name="forumId" th:value="${forum.id}">
+            <input type="hidden" name="idQuestion" th:value="${forum.id}"> <!-- Añadido idQuestion -->
             <button type="submit">Publicar Respuesta</button>
         </form>
     </div>
@@ -216,6 +217,7 @@
                     </label>
                     <input type="hidden" name="answerId" th:value="${answer.id}">
                     <input type="hidden" name="forumId" th:value="${forum.id}">
+                    <input type="hidden" name="idQuestion" th:value="${forum.id}"> <!-- Añadido idQuestion -->
                     <button type="submit">Publicar Réplica</button>
                 </form>
             </div>

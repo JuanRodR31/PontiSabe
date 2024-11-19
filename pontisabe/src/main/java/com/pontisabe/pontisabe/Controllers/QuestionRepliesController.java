@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -68,12 +67,7 @@ public class QuestionRepliesController {
     public String addAnswer(@RequestParam("answerText") String answerText,
                             @RequestParam(value = "anonym", defaultValue = "false") boolean anonym,
                             @RequestParam("forumId") Long forumId,
-                            @RequestParam("userId") Long userId) { // Using @RequestParam for userId
-        System.out.println("Entered addAnswer method");
-        System.out.println("Received Answer Text: " + answerText);
-        System.out.println("Received Forum ID: " + forumId);
-        System.out.println("Received User ID: " + userId);
-
+                            @RequestParam("userId") Long userId) { 
         // Insert the answer
         boolean success = answerService.insertAnswer(answerText, anonym, userId, idQuestion);
 
@@ -86,21 +80,26 @@ public class QuestionRepliesController {
     }
 
 
-    @PostMapping("/addReply/{userId}")
+    @PostMapping("/addReply")
     public String addReply(@RequestParam("replyText") String replyText,
-                           @RequestParam(value = "anonym", defaultValue = "false") boolean anonym,
-                           @RequestParam("answerId") Long answerId,
-                           @RequestParam("forumId") Long forumId,
-                           @PathVariable("userId") Long userId) { // Capturar userId desde la URL
+                        @RequestParam(value = "anonym", defaultValue = "false") boolean anonym,
+                        @RequestParam("answerId") Long answerId,
+                        @RequestParam("forumId") Long forumId,
+                        @RequestParam("idQuestion") Long idQuestion,
+                        @RequestParam("userId") Long userId) {
+
+        // Verifica si idQuestion no es nulo
+        System.out.println("Received idQuestion: " + idQuestion);
+
         // Insertar la réplica
-        
         boolean success = replyService.insertReply(replyText, anonym, userId, answerId);
 
         if (success) {
             // Redirigir para recargar la página con la pregunta y respuestas actualizadas
             return "redirect:/questionRepliesPage?id=" + forumId + "&userId=" + userId;
         } else {
-            return "redirect:/errorPage";
+            return "redirect:/errorPage";  // Asegúrate de que tienes una ruta de error válida
         }
     }
+
 }
