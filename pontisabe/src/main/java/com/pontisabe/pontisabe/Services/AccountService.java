@@ -30,7 +30,7 @@ public class AccountService {
                 user.getLastNames() == null || user.getLastNames().isEmpty());
     }
     
-    public boolean createUser(User user) 
+    public boolean createUser(User user)
         throws Exception
     {
         String sql = "INSERT INTO User (username, names, last_names, email, password) VALUES (?, ?, ?, ?, ?)";
@@ -99,6 +99,7 @@ public class AccountService {
         }
         return false;
     }
+    
     //Buscar usuario por id
     public User findUserById(Long userId) {
         String sql = "SELECT * FROM User WHERE id = ?";
@@ -130,7 +131,7 @@ public class AccountService {
         Long userId = null;
     
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
     
             pstmt.setString(1, username);
     
